@@ -14,6 +14,9 @@ if mode == "Upload Video":
             "http://localhost:8000/upload",
             files={"file": file}
         )
+        
+        st.write(res.status_code)
+        st.write(res.text)
 
         output_path = res.json()["output"]
         st.video(output_path)
