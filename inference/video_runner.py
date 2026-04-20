@@ -39,7 +39,7 @@ def process_video(input_path, output_path, model_path):
             continue
 
         results = engine.process_frame(frame)
-        frame = engine.render(results)
+        frame = engine.render(frame, results)
 
         out.write(frame)
         print(frame_id)
