@@ -10,9 +10,10 @@ def convert_detections(results):
 
     detections = []
     for box, score in zip(boxes, scores):
-        detections.append([*box, score])
-
-    return np.array(detections)
+        x1, y1, x2, y2 = box
+        detections.append([float(x1), float(y1), float(x2), float(y2), float(score)])
+        
+    return detections
 
 def process_video(input_path, output_path):
     cap = cv2.VideoCapture(input_path)
