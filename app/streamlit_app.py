@@ -17,5 +17,6 @@ if file:
         st.error(res.text)
     else:
         data = res.json()
+        st.write(data["output"])
         st.success("Done")
         st.video(res.content)
