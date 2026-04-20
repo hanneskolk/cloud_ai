@@ -11,7 +11,7 @@ if mode == "Upload Video":
     if file:
         st.write("Processing...")
         res = requests.post(
-            "http://84.50.156.4:20010/",
+            "http://localhost:8000/upload",
             files={"file": file}
         )
 
