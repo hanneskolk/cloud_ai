@@ -1,5 +1,6 @@
 from .tensorrt_engine import TensorRTEngine
 from .onnx_engine import ONNXEngine
+import cv2
 
 class TrackerEngine:
 
