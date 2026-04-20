@@ -1,3 +1,4 @@
+import cv2
 from ultralytics import YOLO
 
 class TrackerEngine:
@@ -6,7 +7,10 @@ class TrackerEngine:
         self.conf = conf
         self.imgsz = imgsz
 
-    def predict(self, frame):
+    def process_frame(self, frame):
+        """
+        Runs YOLO + ByteTrack in one call.
+        """
         results = self.model.track(
             frame,
             persist=True,
@@ -19,4 +23,7 @@ class TrackerEngine:
         return results
 
     def render(self, results):
+        """
+        Fast built-in visualization
+        """
         return results.plot()
