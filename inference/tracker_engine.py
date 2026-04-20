@@ -19,7 +19,7 @@ class TrackerEngine:
     def process_frame(self, frame):
         return self.model.infer(frame)
 
-    def process_detections(self, results, conf_threshold=0.25):
+    def process_detections(self, results, conf_threshold=0.15):
         # (1, 11, 8400) → (8400, 11)
         detections = results[0].T
 
@@ -28,6 +28,9 @@ class TrackerEngine:
         confidences = detections[:, 4]
         class_scores = detections[:, 5:]
 
+        print("raw detections before filter:", np.sum(results[0].T[:, 4] > 0.1))
+        print("max confidence seen:", results[0].T[:, 4].max())
+        
         # Filter by confidence
         mask = confidences > conf_threshold
         boxes_xywh = boxes_xywh[mask]
