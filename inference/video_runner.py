@@ -1,7 +1,10 @@
 import cv2
 from inference.tracker_engine import TrackerEngine
+import os
 
 def process_video(input_path, output_path, model_path):
+    
+    output_path = os.path.abspath(output_path)
 
     engine = TrackerEngine(model_path)
 
@@ -13,7 +16,7 @@ def process_video(input_path, output_path, model_path):
 
     out = cv2.VideoWriter(
         output_path,
-        cv2.VideoWriter_fourcc(*"avc1"),
+        cv2.VideoWriter_fourcc(*"mp4v"),
         fps,
         (width, height)
     )

@@ -18,4 +18,4 @@ if file:
     else:
         data = res.json()
         st.success("Done")
-        st.video(data["output"])
+        st.video(data["output"], format="video/mp4")
