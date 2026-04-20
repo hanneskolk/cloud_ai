@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile
 import shutil
-from inference.batch_infer import process_video
+from inference.video_runner import process_video
 
 router = APIRouter()
 
