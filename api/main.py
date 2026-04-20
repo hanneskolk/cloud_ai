@@ -19,7 +19,7 @@ async def upload(file: UploadFile):
     with open(input_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    process_video(input_path, output_path, "models/best.pt")
+    process_video(input_path, output_path, "models/best.onnx")
     
 
     return FileResponse(

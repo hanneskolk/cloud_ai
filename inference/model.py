@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-MODEL_PATH = "models/best.pt"
+MODEL_PATH = "models/best.onnx"
 
 model = YOLO(MODEL_PATH)
 

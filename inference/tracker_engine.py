@@ -3,7 +3,7 @@ from .onnx_engine import ONNXEngine
 
 class TrackerEngine:
 
-    def __init__(self, model_path, backend="tensorrt"):
+    def __init__(self, model_path, backend="onnx"):
 
         if backend == "tensorrt":
             self.model = TensorRTEngine(model_path)
