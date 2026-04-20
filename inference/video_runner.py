@@ -43,5 +43,8 @@ def process_video(input_path, output_path, model_path):
 
     cap.release()
     out.release()
+    
+    print("File exists:", os.path.exists(output_path))
+    print("File size:", os.path.getsize(output_path))
 
     return output_path

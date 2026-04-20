@@ -3,11 +3,16 @@ from fastapi.responses import FileResponse
 import shutil
 import os
 from inference.video_runner import process_video
+import time
 
 app = FastAPI()
 
 @app.post("/upload")
 async def upload(file: UploadFile):
+    
+    start = time.time()
+    process_video(...)
+    print("Processing time:", time.time() - start)
 
     os.makedirs("inputs", exist_ok=True)
     os.makedirs("outputs", exist_ok=True)
@@ -19,6 +24,7 @@ async def upload(file: UploadFile):
         shutil.copyfileobj(file.file, f)
 
     process_video(input_path, output_path, "models/best.pt")
+    
 
     return FileResponse(
         path=output_path,
