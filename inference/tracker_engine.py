@@ -1,29 +1,19 @@
-import cv2
-from ultralytics import YOLO
+from .tensorrt_engine import TensorRTEngine
+from .onnx_engine import ONNXEngine
 
 class TrackerEngine:
-    def __init__(self, model_path, conf=0.25, imgsz=640):
-        self.model = YOLO(model_path)
-        self.conf = conf
-        self.imgsz = imgsz
+
+    def __init__(self, model_path, backend="tensorrt"):
+
+        if backend == "tensorrt":
+            self.model = TensorRTEngine(model_path)
+        else:
+            self.model = ONNXEngine(model_path)
 
     def process_frame(self, frame):
-        """
-        Runs YOLO + ByteTrack in one call.
-        """
-        results = self.model.track(
-            frame,
-            persist=True,
-            conf=self.conf,
-            imgsz=self.imgsz,
-            tracker="bytetrack.yaml",
-            verbose=False
-        )[0]
+        return self.model.infer(frame)
 
-        return results
-
-    def render(self, results):
-        """
-        Fast built-in visualization
-        """
-        return results.plot()
+    def render(self, frame, results):
+        # keep your existing visualization logic
+        # (boxes, labels, etc.)
+        return frame

@@ -7,7 +7,7 @@ def process_video(input_path, output_path, model_path):
     
     output_path = os.path.abspath(output_path)
 
-    engine = TrackerEngine(model_path)
+    engine = TrackerEngine(model_path, backend="tensorrt")
 
     cap = cv2.VideoCapture(input_path)
 
