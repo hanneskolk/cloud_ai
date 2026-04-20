@@ -15,6 +15,7 @@ def process_video(input_path, output_path, model_path):
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = cap.get(cv2.CAP_PROP_FPS)
     if fps == 0 or fps is None:
+        print("Warning: fps=0 detected, defaulting to 25")
         fps = 25
     
     temp_path = output_path.replace(".mp4", "_temp.avi")
@@ -22,7 +23,7 @@ def process_video(input_path, output_path, model_path):
     out = cv2.VideoWriter(
         temp_path,
         cv2.VideoWriter_fourcc(*"XVID"),
-        fps,
+        fps / 2,
         (width, height)
     )
 
@@ -42,7 +43,10 @@ def process_video(input_path, output_path, model_path):
         frame = engine.render(frame, results)
 
         out.write(frame)
-        print(frame_id)
+        
+        if frame_id % 100 == 0:
+            print(f"Processed frame {frame_id}")
+            
         frame_id += 1
         
         
@@ -57,7 +61,10 @@ def process_video(input_path, output_path, model_path):
         "-vcodec", "libx264",
         "-pix_fmt", "yuv420p",
         output_path
-    ])
+    ], check=True)
+    
+    if os.path.exists(temp_path):
+        os.remove(temp_path)
     
     print("File exists:", os.path.exists(output_path))
     print("File size:", os.path.getsize(output_path))
