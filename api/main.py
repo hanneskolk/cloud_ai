@@ -1,22 +1,24 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, File
 import shutil
 import os
-from inference.video_runner import process_video
+
+from api.stream import get_stream_response
 
 app = FastAPI()
 
+VIDEO_PATH = "inputs/input.mp4"
+
+
 @app.post("/upload")
-async def upload(file: UploadFile):
-
+async def upload(file: UploadFile = File(...)):
     os.makedirs("inputs", exist_ok=True)
-    os.makedirs("outputs", exist_ok=True)
 
-    input_path = f"inputs/{file.filename}"
-    output_path = f"outputs/out_{file.filename}"
-
-    with open(input_path, "wb") as f:
+    with open(VIDEO_PATH, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    process_video(input_path, output_path, "models/best.pt")
+    return {"message": "uploaded", "stream_url": "/stream"}
 
-    return {"output": output_path}
+
+@app.get("/stream")
+def stream():
+    return get_stream_response()

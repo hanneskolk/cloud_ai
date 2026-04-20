@@ -1,12 +1,12 @@
 from ultralytics import YOLO
 
 class TrackerEngine:
-    def __init__(self, model_path, conf=0.15, imgsz=640):
+    def __init__(self, model_path, conf=0.25, imgsz=640):
         self.model = YOLO(model_path)
         self.conf = conf
         self.imgsz = imgsz
 
-    def process(self, frame):
+    def predict(self, frame):
         results = self.model.track(
             frame,
             persist=True,
