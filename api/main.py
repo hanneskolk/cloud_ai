@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile
+from fastapi.responses import FileResponse
 import shutil
 import os
 from inference.video_runner import process_video
@@ -19,4 +20,8 @@ async def upload(file: UploadFile):
 
     process_video(input_path, output_path, "models/best.pt")
 
-    return {"output": output_path}
+    return FileResponse(
+        path=output_path,
+        media_type="video/mp4",
+        filename="output.mp4"
+    )

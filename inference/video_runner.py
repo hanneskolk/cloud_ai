@@ -13,6 +13,8 @@ def process_video(input_path, output_path, model_path):
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = cap.get(cv2.CAP_PROP_FPS)
+    if fps == 0 or fps is None:
+        fps = 25
 
     out = cv2.VideoWriter(
         output_path,
