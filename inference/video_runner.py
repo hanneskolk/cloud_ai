@@ -13,7 +13,7 @@ def process_video(input_path, output_path, model_path):
 
     out = cv2.VideoWriter(
         output_path,
-        cv2.VideoWriter_fourcc(*"XVID"),
+        cv2.VideoWriter_fourcc(*"avc1"),
         fps,
         (width, height)
     )
