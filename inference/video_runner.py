@@ -18,7 +18,7 @@ def process_video(input_path, output_path, model_path):
 
     out = cv2.VideoWriter(
         output_path,
-        cv2.VideoWriter_fourcc(*"mp4v"),
+        cv2.VideoWriter_fourcc(*"H264"),
         fps,
         (width, height)
     )
@@ -41,6 +41,8 @@ def process_video(input_path, output_path, model_path):
         out.write(frame)
         print(frame_id)
         frame_id += 1
+        
+        
 
     cap.release()
     out.release()
