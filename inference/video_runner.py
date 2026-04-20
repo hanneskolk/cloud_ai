@@ -39,6 +39,7 @@ def process_video(input_path, output_path, model_path):
         frame = engine.render(results)
 
         out.write(frame)
+        print(frame_id)
         frame_id += 1
 
     cap.release()

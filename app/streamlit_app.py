@@ -16,6 +16,7 @@ if file:
     if res.status_code != 200:
         st.error(res.text)
     else:
+        st.write("Looking for response")
         data = res.json()
         st.write(data["output"])
         st.success("Done")
