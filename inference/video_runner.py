@@ -7,8 +7,8 @@ def process_video(input_path, output_path, model_path):
 
     cap = cv2.VideoCapture(input_path)
 
-    width = int(cap.get(3))
-    height = int(cap.get(4))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = cap.get(cv2.CAP_PROP_FPS)
 
     out = cv2.VideoWriter(
@@ -25,16 +25,15 @@ def process_video(input_path, output_path, model_path):
         if not ret:
             break
 
-        # ⚡ optional speed boost
+        # ⚡ performance optimization (optional)
         if frame_id % 2 != 0:
             frame_id += 1
             continue
 
         results = engine.process_frame(frame)
+        frame = engine.render(results)
 
-        annotated = engine.draw(results)
-
-        out.write(annotated)
+        out.write(frame)
         frame_id += 1
 
     cap.release()

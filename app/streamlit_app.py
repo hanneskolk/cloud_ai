@@ -3,20 +3,19 @@ import requests
 
 st.title("Drone Detection System")
 
-mode = st.selectbox("Mode", ["Upload Video"])
+file = st.file_uploader("Upload MP4 Video")
 
-if mode == "Upload Video":
-    file = st.file_uploader("Upload MP4")
+if file:
+    st.write("Processing...")
 
-    if file:
-        st.write("Processing...")
-        res = requests.post(
-            "http://localhost:8000/upload",
-            files={"file": file}
-        )
-        
-        st.write(res.status_code)
-        st.write(res.text)
+    res = requests.post(
+        "http://localhost:8000/upload",
+        files={"file": file}
+    )
 
-        output_path = res.json()["output"]
-        st.video(output_path)
+    if res.status_code != 200:
+        st.error(res.text)
+    else:
+        data = res.json()
+        st.success("Done")
+        st.video(data["output"])
