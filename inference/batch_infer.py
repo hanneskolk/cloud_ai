@@ -2,6 +2,17 @@ import cv2
 from inference.model import run_inference
 from tracker.bytetrack_wrapper import track
 from utils.draw import draw_boxes
+import numpy as np
+
+def convert_detections(results):
+    boxes = results.boxes.xyxy.cpu().numpy()
+    scores = results.boxes.conf.cpu().numpy()
+
+    detections = []
+    for box, score in zip(boxes, scores):
+        detections.append([*box, score])
+
+    return np.array(detections)
 
 def process_video(input_path, output_path):
     cap = cv2.VideoCapture(input_path)
@@ -20,7 +31,7 @@ def process_video(input_path, output_path):
             break
 
         results = run_inference(frame)
-        detections = results.boxes.xyxy.cpu().numpy()
+        detections = convert_detections(results)
 
         tracks = track(detections, frame)
 
