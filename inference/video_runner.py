@@ -1,6 +1,7 @@
 import cv2
 from inference.tracker_engine import TrackerEngine
 import os
+import subprocess
 
 def process_video(input_path, output_path, model_path):
     
@@ -15,10 +16,12 @@ def process_video(input_path, output_path, model_path):
     fps = cap.get(cv2.CAP_PROP_FPS)
     if fps == 0 or fps is None:
         fps = 25
+    
+    temp_path = output_path.replace(".mp4", "_temp.avi")
 
     out = cv2.VideoWriter(
-        output_path,
-        cv2.VideoWriter_fourcc(*"H264"),
+        temp_path,
+        cv2.VideoWriter_fourcc(*"XVID"),
         fps,
         (width, height)
     )
@@ -46,6 +49,15 @@ def process_video(input_path, output_path, model_path):
 
     cap.release()
     out.release()
+    
+    subprocess.run([
+        "ffmpeg",
+        "-y",
+        "-i", temp_path,
+        "-vcodec", "libx264",
+        "-pix_fmt", "yuv420p",
+        output_path
+    ])
     
     print("File exists:", os.path.exists(output_path))
     print("File size:", os.path.getsize(output_path))
