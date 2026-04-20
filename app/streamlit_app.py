@@ -1,21 +1,19 @@
 import streamlit as st
-import requests
+from stream_utils import frame_generator
+import time
 
-st.title("Drone Detection System")
+st.title("Drone Real-Time Detection System")
 
-file = st.file_uploader("Upload MP4 Video")
+video = st.file_uploader("Upload video (or replace with RTSP)")
 
-if file:
-    st.write("Processing...")
+if video:
+    temp_path = "temp.mp4"
 
-    res = requests.post(
-        "http://localhost:8000/upload",
-        files={"file": file}
-    )
+    with open(temp_path, "wb") as f:
+        f.write(video.read())
 
-    if res.status_code != 200:
-        st.error(res.text)
-    else:
-        data = res.json()
-        st.success("Done")
-        st.video(data["output"])
+    stframe = st.empty()
+
+    for frame_bytes in frame_generator(temp_path, "models/best.pt"):
+        stframe.image(frame_bytes)
+        time.sleep(0.01)  # controls playback speed
