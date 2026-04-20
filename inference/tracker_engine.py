@@ -19,6 +19,8 @@ class TrackerEngine:
         return self.model.infer(frame)
 
     def render(self, frame, results):
+        print("results shape:", results.shape)
+        print("first row:", results[0])
         if results is None or len(results) == 0:
             return frame
 
